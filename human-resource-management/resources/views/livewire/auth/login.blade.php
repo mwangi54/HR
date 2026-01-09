@@ -73,14 +73,21 @@ new #[Layout('components.layouts.auth')] class extends Component {
     }
 }; ?>
 
-<div class="flex flex-col gap-6">
-    <x-auth-header :title="__('Log in to your account')" :description="__('Enter your email and password below to log in')" />
+<div class="flex flex-col gap-6 w-full max-w-sm mx-auto min-h-screen justify-center py-12">
+    <div class="text-center mb-4">
+        <div class="flex items-center justify-center gap-2 mb-4">
+            <div class="bg-[#16a34a] text-white p-1.5 rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-leaf text-lg"></i>
+            </div>
+            <span class="text-2xl font-bold text-[#1e3a8a] tracking-tight">Mavuno</span>
+        </div>
+        <h1 class="text-xl font-semibold text-slate-800">{{ __('Welcome back') }}</h1>
+        <p class="text-sm text-slate-500 mt-1">{{ __('Enter your credentials to access the factory portal') }}</p>
+    </div>
 
-    <!-- Session Status -->
     <x-auth-session-status class="text-center" :status="session('status')" />
 
-    <form method="POST" wire:submit="login" class="flex flex-col gap-6">
-        <!-- Email Address -->
+    <form method="POST" wire:submit="login" class="flex flex-col gap-5">
         <flux:input
             wire:model="email"
             :label="__('Email address')"
@@ -88,10 +95,10 @@ new #[Layout('components.layouts.auth')] class extends Component {
             required
             autofocus
             autocomplete="email"
-            placeholder="email@example.com"
+            placeholder="manager@teafactory.co.ke"
+            class="focus:!border-[#1e3a8a] focus:!ring-[#1e3a8a]/20"
         />
 
-        <!-- Password -->
         <div class="relative">
             <flux:input
                 wire:model="password"
@@ -101,29 +108,40 @@ new #[Layout('components.layouts.auth')] class extends Component {
                 autocomplete="current-password"
                 :placeholder="__('Password')"
                 viewable
+                class="focus:!border-[#1e3a8a] focus:!ring-[#1e3a8a]/20"
             />
 
             @if (Route::has('password.request'))
-                <flux:link class="absolute end-0 top-0 text-sm" :href="route('password.request')" wire:navigate>
-                    {{ __('Forgot your password?') }}
+                <flux:link class="absolute end-0 top-0 text-xs font-medium !text-[#1e3a8a] hover:underline" :href="route('password.request')" wire:navigate>
+                    {{ __('Forgot password?') }}
                 </flux:link>
             @endif
         </div>
 
-        <!-- Remember Me -->
-        <flux:checkbox wire:model="remember" :label="__('Remember me')" />
+        <flux:checkbox 
+            wire:model="remember" 
+            :label="__('Remember me')" 
+            class="!text-[#1e3a8a]"
+        />
 
-        <div class="flex items-center justify-end">
-            <flux:button variant="primary" type="submit" class="w-full" data-test="login-button">
+        <div class="pt-2">
+            <flux:button 
+                variant="primary" 
+                type="submit" 
+                class="w-full !bg-[#1e3a8a] hover:!bg-[#1e3a8a]/90 !border-[#1e3a8a] !text-white font-medium shadow-sm transition-all" 
+                data-test="login-button"
+            >
                 {{ __('Log in') }}
             </flux:button>
         </div>
     </form>
 
     @if (Route::has('register'))
-        <div class="space-x-1 rtl:space-x-reverse text-center text-sm text-zinc-600 dark:text-zinc-400">
-            <span>{{ __('Don\'t have an account?') }}</span>
-            <flux:link :href="route('register')" wire:navigate>{{ __('Sign up') }}</flux:link>
+        <div class="text-center text-sm text-zinc-500">
+            <span>{{ __('New to Mavuno?') }}</span>
+            <flux:link :href="route('register')" wire:navigate class="!text-[#16a34a] font-semibold hover:!text-[#16a34a]/80 ml-1">
+                {{ __('Register factory account') }}
+            </flux:link>
         </div>
     @endif
 </div>

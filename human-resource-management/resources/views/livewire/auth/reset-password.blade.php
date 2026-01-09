@@ -56,7 +56,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
         // If the password was successfully reset, we will redirect the user back to
         // the application's home authenticated view. If there is an error we can
         // redirect them back to where they came from with their error message.
-        if ($status !== Password::PasswordReset) {
+        if ($status !== Password::PASSWORD_RESET) {
             $this->addError('email', __($status));
 
             return;
@@ -68,13 +68,22 @@ new #[Layout('components.layouts.auth')] class extends Component {
     }
 }; ?>
 
-<div class="flex flex-col gap-6">
-    <x-auth-header :title="__('Reset password')" :description="__('Please enter your new password below')" />
+<div class="flex flex-col gap-6 w-full max-w-sm mx-auto min-h-screen justify-center py-12">
+    <div class="text-center mb-4">
+        <div class="flex items-center justify-center gap-2 mb-4">
+            <div class="bg-[#16a34a] text-white p-1.5 rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-leaf text-lg"></i>
+            </div>
+            <span class="text-2xl font-bold text-[#1e3a8a] tracking-tight">Mavuno</span>
+        </div>
+        <h1 class="text-xl font-semibold text-slate-800">{{ __('Reset password') }}</h1>
+        <p class="text-sm text-slate-500 mt-1">{{ __('Please enter your new password below') }}</p>
+    </div>
 
     <!-- Session Status -->
     <x-auth-session-status class="text-center" :status="session('status')" />
 
-    <form method="POST" wire:submit="resetPassword" class="flex flex-col gap-6">
+    <form method="POST" wire:submit="resetPassword" class="flex flex-col gap-5">
         <!-- Email Address -->
         <flux:input
             wire:model="email"
@@ -82,6 +91,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
             type="email"
             required
             autocomplete="email"
+            class="focus:!border-[#1e3a8a] focus:!ring-[#1e3a8a]/20"
         />
 
         <!-- Password -->
@@ -90,26 +100,3 @@ new #[Layout('components.layouts.auth')] class extends Component {
             :label="__('Password')"
             type="password"
             required
-            autocomplete="new-password"
-            :placeholder="__('Password')"
-            viewable
-        />
-
-        <!-- Confirm Password -->
-        <flux:input
-            wire:model="password_confirmation"
-            :label="__('Confirm password')"
-            type="password"
-            required
-            autocomplete="new-password"
-            :placeholder="__('Confirm password')"
-            viewable
-        />
-
-        <div class="flex items-center justify-end">
-            <flux:button type="submit" variant="primary" class="w-full" data-test="reset-password-button">
-                {{ __('Reset password') }}
-            </flux:button>
-        </div>
-    </form>
-</div>
